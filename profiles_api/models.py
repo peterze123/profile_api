@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager
 
 class userInfoManager(BaseUserManager):
 
-    def create_usr(self, email, name, password=None):
+    def create_user(self, email, name, password=None):
         if not email:
             raise ValueError('Email is a required field')
 
@@ -16,26 +16,25 @@ class userInfoManager(BaseUserManager):
 
         return user
 
-    def create_admin(self, email, name, password):
-        user = self.create_usr(email, name, password)
+    def create_superuser(self, email,name, password):
+        user = self.create_user(email, name, password)
 
+        user.is_staff=True
         user.is_superuser = True
-        user.save(using=self._db)\
+        user.save(using=self._db)
 
         return user
 
 class userInfo(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=50, unique=True, primary_key=True)
+    email = models.EmailField(max_length=50, unique=True)
     name = models.CharField(max_length=50)
     active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
     objects = userInfoManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FOELDS = ['userId']
-
-    def get_id(self):
-        return self.user_id
+    REQUIRED_FIELDS = ['name']
 
     def get_name(self):
         return self.name

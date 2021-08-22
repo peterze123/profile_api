@@ -6,7 +6,7 @@ from profiles_api import serializers
 
 
 class HelloApiView(APIView):
-    serailizer_class = serializers.HelloSerializer
+    serializer_class = serializers.HelloSerializer
 
     """Testing APIView features"""
     def get(self, request, format=None):
@@ -17,7 +17,7 @@ class HelloApiView(APIView):
         return Response({'message':'Hello', 'an_apiview': an_apiview})
     
     def post(self, request):
-        serializer = self.serailizer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             name = serializer.validated_data.get('name')
@@ -26,3 +26,12 @@ class HelloApiView(APIView):
         
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk=None):
+        return Response({'method': 'PUT'})
+
+    def patch(self, request, pk=None):
+        return Response({'method': 'PATCH'})
+
+    def delete(self, request, pk=None):
+        return Response({'method': 'DELETE'})

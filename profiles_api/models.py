@@ -40,7 +40,7 @@ class userInfo(AbstractBaseUser, PermissionsMixin):
     def get_name(self):
         return self.name
 
-    def __repr__(self):
+    def __str__(self):
         return self.email
 
 class profilePrefrence(models.Model):
@@ -60,6 +60,7 @@ class profilePrefrence(models.Model):
     
     preference = models.CharField(max_length=13, choices=categories, default='general')
     changed_on = models.DateTimeField(auto_now_add=True)
+    # news = models.TextField()
 
     def __str__(self):
         return self.preference

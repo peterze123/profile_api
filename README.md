@@ -1,2 +1,3 @@
 # Your_News
-- a profiles api with authentication api
+- contains a profiles api with authentication api
+- each user's news are pushed according to their preferences

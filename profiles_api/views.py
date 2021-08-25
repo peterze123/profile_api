@@ -1,3 +1,4 @@
+from django.db.models import query
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,6 +7,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from profiles_api import serializers
 from profiles_api import models
@@ -85,3 +87,17 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserLoginApiView(ObtainAuthToken):
     """login token authentication for the profiles"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+class UserCategoryViewSet(viewsets.ModelViewSet):
+    """Handles the category variable for each profile"""
+    authentication_classes= (TokenAuthentication, )
+    serializer_class = serializers.ProfileCategorySerializer
+    queryset = models.profilePrefrence.objects.all()
+    permission_classes = (
+        permissions.UpdateOwnStatus,
+        IsAuthenticatedOrReadOnly
+    )
+
+    def perform_create(self, serializer):
+        """set the profile of logged in user"""
+        serializer.save(user_info=self.request.user)

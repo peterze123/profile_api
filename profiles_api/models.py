@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
 
 class userInfoManager(BaseUserManager):
 
@@ -42,3 +43,23 @@ class userInfo(AbstractBaseUser, PermissionsMixin):
     def __repr__(self):
         return self.email
 
+class profilePrefrence(models.Model):
+    """Profile's prefrence of news"""  
+    user_info = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE,
+    )
+    
+    categories = [('business','business'),
+    ('entertainment','entertainment'),
+    ('general','general'),
+    ('health','health'),
+    ('science','science'),
+    ('sports','sports'),
+    ('technology','technology'),]
+    
+    preference = models.CharField(max_length=13, choices=categories, default='general')
+    changed_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.preference

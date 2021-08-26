@@ -92,32 +92,33 @@ class UserLoginApiView(ObtainAuthToken):
 
 class UserCategoryViewSet(viewsets.ModelViewSet):
     """Handles the category variable for each profile"""
-    authentication_classes= (TokenAuthentication, )
     serializer_class = serializers.ProfileCategorySerializer
     queryset = models.profilePrefrence.objects.all()
+    # add for authenication 
+    # authentication_classes = (TokenAuthentication, )
     permission_classes = (
         permissions.UpdateOwnStatus,
         IsAuthenticatedOrReadOnly
     )
 
     def perform_create(self, serializer):
-        """set the profile of logged in user"""
-        serializer.save(user_info=self.request.user)
+        """update the profile of logged in user"""
+        serializer.save(user_info = self.request.user)
 
-    def create(self, request):
         """updates the articles after a profile's preference is set"""
-        newsapi = NewsApiClient(api_key = '2fe5b1793acc49adb3e4484c9ead5d87')
+        newsapi = NewsApiClient(api_key = 'YOUR_KEY')
         top = newsapi.get_top_headlines(sources='teachcrunch')
         #
         news = top['articles']
         for i in range(len(news)):
             f = news[i]
-            articles.user_info = self.request.user
-            articles.title = f['title']
-            articles.description = f['description']
-            articles.IMAGE = f['urlToImage']
-            articles.save()
-        return Response({'message': 'Articles Updated'})
-    
-    def update(self, request):
-        self.create()
+            new_article = articles(user_info = self.request.user, title = f['title'], description = f['description'], IMAGE = f['urlToImage'])
+            new_article.save()
+
+class Articles(viewsets.ModelViewSet):
+    serializer_class = serializers.ArticleSerializer
+    queryset = models.articles.objects.all()
+
+    def perform_create(self, serializer):
+        """set the profile of logged in user"""
+        serializer.save(user_info=self.request.user)

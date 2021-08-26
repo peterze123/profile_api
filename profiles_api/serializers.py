@@ -45,6 +45,10 @@ class ProfileCategorySerializer(serializers.ModelSerializer):
         fields = ('id','user_info','preference','modified_on')
         extra_kwargs={'user_info':{'read_only':True}}
 
-    
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.articles
+        fields = '__all__'
+        extra_kwargs={'user_info':{'read_only':True}, 'title':{'read_only':True}, 'description':{'read_only':True}, 'IMAGE':{'read_only':True}}
 
 

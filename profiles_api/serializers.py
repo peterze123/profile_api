@@ -39,8 +39,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class ProfileCategorySerializer(serializers.ModelSerializer):
     """serializes the category for profile"""
-
+    """could used for adding comment functions"""
     class Meta:
         model = models.profilePrefrence
-        fields = ('id','user_info','preference','changed_on')
+        fields = ('id','user_info','preference','modified_on')
         extra_kwargs={'user_info':{'read_only':True}}
+
+    
+
+

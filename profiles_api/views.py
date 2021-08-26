@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from profiles_api import serializers
 from profiles_api import models
 from profiles_api import permissions
+from .models import articles
+from newsapi import NewsApiClient
 
 
 class HelloApiView(APIView):
@@ -101,3 +103,21 @@ class UserCategoryViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """set the profile of logged in user"""
         serializer.save(user_info=self.request.user)
+
+    def create(self, request):
+        """updates the articles after a profile's preference is set"""
+        newsapi = NewsApiClient(api_key = '2fe5b1793acc49adb3e4484c9ead5d87')
+        top = newsapi.get_top_headlines(sources='teachcrunch')
+        #
+        news = top['articles']
+        for i in range(len(news)):
+            f = news[i]
+            articles.user_info = self.request.user
+            articles.title = f['title']
+            articles.description = f['description']
+            articles.IMAGE = f['urlToImage']
+            articles.save()
+        return Response({'message': 'Articles Updated'})
+    
+    def update(self, request):
+        self.create()

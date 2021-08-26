@@ -4,3 +4,4 @@ from profiles_api import models
 
 admin.site.register(models.userInfo)
 admin.site.register(models.profilePrefrence)
+admin.site.register(models.articles)

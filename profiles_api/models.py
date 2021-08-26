@@ -59,8 +59,20 @@ class profilePrefrence(models.Model):
     ('technology','technology'),]
     
     preference = models.CharField(max_length=13, choices=categories, default='general')
-    changed_on = models.DateTimeField(auto_now_add=True)
-    # news = models.TextField()
+    modified_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.preference
+
+class articles(models.Model):
+    """assign the perspective articles to each profile according to their preference"""
+    user_info = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE
+    )
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    IMAGE = models.URLField()
+
+    def __str__(self):
+        return self.title

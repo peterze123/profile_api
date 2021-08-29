@@ -12,8 +12,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from profiles_api import serializers
 from profiles_api import models
 from profiles_api import permissions
-from .models import articles
-from newsapi import NewsApiClient
 
 
 class HelloApiView(APIView):
@@ -89,11 +87,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserLoginApiView(ObtainAuthToken):
     """login token authentication for the profiles"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+    
 
 class UserCategoryViewSet(viewsets.ModelViewSet):
     """Handles the category variable for each profile"""
     serializer_class = serializers.ProfileCategorySerializer
-    queryset = models.profilePrefrence.objects.all()
+    queryset = models.profileFeed.objects.all()
     # add for authenication 
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (
@@ -104,16 +103,6 @@ class UserCategoryViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """update the profile of logged in user"""
         serializer.save(user_info = self.request.user)
-
-        """updates the articles after a profile's preference is set"""
-        newsapi = NewsApiClient(api_key = 'YOUR_KEY')
-        top = newsapi.get_top_headlines(sources='teachcrunch')
-        #
-        news = top['articles']
-        for i in range(len(news)):
-            f = news[i]
-            new_article = articles(user_info = self.request.user, title = f['title'], description = f['description'], IMAGE = f['urlToImage'])
-            new_article.save()
 
 class Articles(viewsets.ModelViewSet):
     serializer_class = serializers.ArticleSerializer

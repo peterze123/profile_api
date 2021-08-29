@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
+from django.db.models.deletion import CASCADE
 
 class userInfoManager(BaseUserManager):
 
@@ -31,6 +32,15 @@ class userInfo(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=50)
     active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    #
+    categories = [('business','business'),
+    ('entertainment','entertainment'),
+    ('general','general'),
+    ('health','health'),
+    ('science','science'),
+    ('sports','sports'),
+    ('technology','technology'),]
+    preference = models.CharField(max_length=13, choices=categories, default='general')
 
     objects = userInfoManager()
 
@@ -43,36 +53,40 @@ class userInfo(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class profilePrefrence(models.Model):
-    """Profile's prefrence of news"""  
+class profileFeed(models.Model):
+    """Profile's comments toward an article or feed of any type"""  
     user_info = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete = models.CASCADE,
     )
-    
-    categories = [('business','business'),
-    ('entertainment','entertainment'),
-    ('general','general'),
-    ('health','health'),
-    ('science','science'),
-    ('sports','sports'),
-    ('technology','technology'),]
-    
-    preference = models.CharField(max_length=13, choices=categories, default='general')
+    article_info = models.ForeignKey(
+        'articles',
+        on_delete = models.CASCADE
+    )
+    text = models.TextField()
     modified_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.preference
+        return self.text
 
 class articles(models.Model):
-    """assign the perspective articles to each profile according to their preference"""
-    user_info = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete = models.CASCADE
-    )
+    """model that stores information, in this case I'm assuming this api is used for a news website"""
+
     title = models.CharField(max_length=255)
     description = models.TextField()
-    IMAGE = models.URLField()
+    IMAGE = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+# When creating the app, this code would call the news api and retrieve news according to a user's preference
+# """updates the articles after a profile's preference is set"""
+        # newsapi = NewsApiClient(api_key = 'YOUR_KEY')
+        # top = newsapi.get_top_headlines(sources='teachcrunch')
+        # #
+        # news = top['articles']
+        # for i in range(len(news)):
+        #     f = news[i]
+        #     new_article = articles(user_info = 'user_info', title = f['title'], description = f['description'], IMAGE = f['urlToImage'])
+        #     new_article.save()
+        

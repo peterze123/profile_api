@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from newsapi import NewsApiClient
 
 from profiles_api import models
+from .models import articles
 
 class HelloSerializer(serializers.Serializer):
     """Serializes a name field for testing our APIView"""
@@ -10,7 +12,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
     class Meta:
         model = models.userInfo
-        fields = ('id', 'email', 'name', 'password')
+        fields = ('id', 'email', 'name', 'password','preference')
         extra_kwargs = {
             'password':{
                 'write_only':True,
@@ -41,14 +43,13 @@ class ProfileCategorySerializer(serializers.ModelSerializer):
     """serializes the category for profile"""
     """could used for adding comment functions"""
     class Meta:
-        model = models.profilePrefrence
-        fields = ('id','user_info','preference','modified_on')
-        extra_kwargs={'user_info':{'read_only':True}}
+        model = models.profileFeed
+        fields = ('id','user_info','text','modified_on','article_info')
+        extra_kwargs={'user_info':{'read_only':True}, 'article_info':{'required':False}}
+
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.articles
         fields = '__all__'
-        extra_kwargs={'user_info':{'read_only':True}, 'title':{'read_only':True}, 'description':{'read_only':True}, 'IMAGE':{'read_only':True}}
-
-
+        extra_kwargs = {'IMAGE': {"required": False, "allow_null": True}}

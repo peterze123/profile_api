@@ -80,15 +80,3 @@ class articles(models.Model):
 
     def __str__(self):
         return self.title + ' (' + self.preference + ')'
-
-# When creating the app this code would call the news api and retrieve news according to a user's preference
-# """updates the articles after a profile's preference is set"""
-        # newsapi = NewsApiClient(api_key = 'YOUR_KEY')
-        # top = newsapi.get_top_headlines(sources='teachcrunch')
-        # #
-        # news = top['articles']
-        # for i in range(len(news)):
-        #     f = news[i]
-        #     new_article = articles(user_info = 'user_info', title = f['title'], description = f['description'], IMAGE = f['urlToImage'])
-        #     new_article.save()
-        

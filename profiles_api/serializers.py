@@ -52,4 +52,4 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.articles
         fields = '__all__'
-        extra_kwargs = {'IMAGE': {"required": False, "allow_null": True}}
+        extra_kwargs = {'IMAGE': {"required": False, "allow_null": True,"allow_blank":True}}

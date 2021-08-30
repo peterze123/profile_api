@@ -93,8 +93,7 @@ class UserCategoryViewSet(viewsets.ModelViewSet):
     """Handles the category variable for each profile"""
     serializer_class = serializers.ProfileCategorySerializer
     queryset = models.profileFeed.objects.all()
-    # add for authenication 
-    # authentication_classes = (TokenAuthentication, )
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (
         permissions.UpdateOwnStatus,
         IsAuthenticatedOrReadOnly
@@ -108,6 +107,3 @@ class Articles(viewsets.ModelViewSet):
     serializer_class = serializers.ArticleSerializer
     queryset = models.articles.objects.all()
 
-    def perform_create(self, serializer):
-        """set the profile of logged in user"""
-        serializer.save(user_info=self.request.user)

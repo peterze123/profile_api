@@ -27,20 +27,21 @@ class userInfoManager(BaseUserManager):
 
         return user
 
-class userInfo(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=50, unique=True)
-    name = models.CharField(max_length=50)
-    active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    #
-    categories = [('business','business'),
+categories = [('business','business'),
     ('entertainment','entertainment'),
     ('general','general'),
     ('health','health'),
     ('science','science'),
     ('sports','sports'),
     ('technology','technology'),]
-    preference = models.CharField(max_length=13, choices=categories, default='general')
+
+class userInfo(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    
+    preference = models.CharField(max_length=13, choices= categories, default='general')
 
     objects = userInfoManager()
 
@@ -72,14 +73,15 @@ class profileFeed(models.Model):
 class articles(models.Model):
     """model that stores information, in this case I'm assuming this api is used for a news website"""
 
+    preference = models.CharField(max_length=13, choices= categories, default='general')
     title = models.CharField(max_length=255)
     description = models.TextField()
     IMAGE = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title + ' (' + self.preference + ')'
 
-# When creating the app, this code would call the news api and retrieve news according to a user's preference
+# When creating the app this code would call the news api and retrieve news according to a user's preference
 # """updates the articles after a profile's preference is set"""
         # newsapi = NewsApiClient(api_key = 'YOUR_KEY')
         # top = newsapi.get_top_headlines(sources='teachcrunch')

@@ -8,6 +8,21 @@
 
 # API/profiles
 Users registration, selecting their preference of articles and account information
+![profiles](/instances/profiles.png)
 
 # API/articles
-Any authorized(logged in) user could access/create 
+Any user (unauthorized) could create and access articles
+![articles](/instances/articles.png)
+
+# API/feed
+Only authorized(logged in) users/admins can post comments toward each article
+![articles](/instances/feed.png)
+![admin](/instances/admin.png)
+
+# Technologies
+- Django
+- Django REST Framework
+
+
+
+

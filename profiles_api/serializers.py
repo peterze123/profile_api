@@ -38,8 +38,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-class ProfileCategorySerializer(serializers.ModelSerializer):
-    """serializes the category for profile"""
+class ProfileFeedSerializer(serializers.ModelSerializer):
+    """serializes the feed for profile"""
     """could used for adding comment functions"""
     class Meta:
         model = models.profileFeed

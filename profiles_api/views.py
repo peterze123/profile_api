@@ -91,9 +91,9 @@ class UserLoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
     
 
-class UserCategoryViewSet(viewsets.ModelViewSet):
-    """Handles the category variable for each profile"""
-    serializer_class = serializers.ProfileCategorySerializer
+class UserFeedViewSet(viewsets.ModelViewSet):
+    """Handles the feed for each profile"""
+    serializer_class = serializers.ProfileFeedSerializer
     queryset = models.profileFeed.objects.all()
     authentication_classes = (TokenAuthentication, )
     permission_classes = (
@@ -108,4 +108,5 @@ class UserCategoryViewSet(viewsets.ModelViewSet):
 class Articles(viewsets.ModelViewSet):
     serializer_class = serializers.ArticleSerializer
     queryset = models.articles.objects.all()
+
 

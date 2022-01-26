@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from newsapi import NewsApiClient
 
 from profiles_api import models
 from .models import articles

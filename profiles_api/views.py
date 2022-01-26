@@ -1,6 +1,8 @@
-from django.db.models import query
+from django.shortcuts import render
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -13,7 +15,7 @@ from profiles_api import serializers
 from profiles_api import models
 from profiles_api import permissions
 
-
+#routes to the viewset accessed through /api
 class HelloApiView(APIView):
     serializer_class = serializers.HelloSerializer
 

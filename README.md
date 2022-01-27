@@ -2,9 +2,8 @@
 
 - a profiles django api with authentication and profile feed functions
 - each user can choose their prefrence of news type
-- articles are retrieved from another external api and stored within the articles model
-- users can retrieve articles or create articles accordingly
-- user feeds/comments for certain articles may be created or retrieved
+- anyone can retrieve articles or create articles accordingly
+- user feeds/comments for certain articles may be created or retrieved by authorized users, only for those that are authenticated (logged in)
 
 # API/profiles
 Users registration, selecting their preference of articles and account information
@@ -17,6 +16,9 @@ Any user (unauthorized) could create and access articles
 # API/feed
 Only authorized(logged in) users/admins can post comments toward each article
 ![articles](/instances/feed.png)
+-------------------------------
+![login](instances/login.png)
+-------------------------------
 ![admin](/instances/admin.png)
 
 # Technologies
